@@ -18,7 +18,6 @@ public class Player : Character
     {
         
     }
-
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
@@ -27,7 +26,7 @@ public class Player : Character
             animator.SetTrigger("TakeHit");
             if (attackController != null)
             {
-                attackController.ResetCombo();
+                attackController.Interrupt();
             }
         }
     }

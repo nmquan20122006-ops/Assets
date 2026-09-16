@@ -13,21 +13,21 @@ public class Enemy : Character
     [field: SerializeField] public int visionRange {  get; private set; }
     [field: SerializeField] public Vector2 facingDirection { get; private set; }
     [field: SerializeField] public bool isWaiting {  get; set; }
+    [field: SerializeField] public bool isHurting {  get; set; }
     public Transform playerTranform { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public Animator animator { get; private set; }
     private SpriteRenderer spriteRenderer;
-    public enum EnemyStateDebug { Patrol, Chase, Attack }
+    public enum EnemyStateDebug { Patrol, Chase, Attack, Hurt }
     [field: SerializeField] public EnemyStateDebug currentStateDebug { get; set; }
     [field: SerializeField] public float attackRange { get; private set; }
     public EnemyAttack enemyAttack { get; private set; }
-
-    private Coroutine knockBackCoroutine;
-    [SerializeField] private bool isKnockedBack = false;
+    [field: SerializeField] public bool isKnockedBack {  get; set; }
     public StateMachine stateMachine { get; private set; }
     public EnemyPatrolState PatrolState { get; private set; }
     public EnemyChaseState ChaseState { get; private set; }
     public EnemyAttackState AttackState {  get; private set; }
+    public EnemyHurtState HurtState { get; private set; }
 
     private void Awake()
     {
@@ -35,13 +35,11 @@ public class Enemy : Character
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         enemyAttack = GetComponent<EnemyAttack>();
-
-        isWaiting = false;
-
         stateMachine = new StateMachine();
         PatrolState = new EnemyPatrolState(this, stateMachine);
         ChaseState = new EnemyChaseState(this, stateMachine);
         AttackState = new EnemyAttackState(this, stateMachine);
+        HurtState = new EnemyHurtState(this, stateMachine);
     }
     void Start()
     {
@@ -106,39 +104,12 @@ public class Enemy : Character
     public void TakeDamage(int damage, Vector2 attackerPosition, float lift, float force, float duration)
     {
         base.TakeDamage(damage);
-        if (!IsDead())
-        {
-            if (animator != null) animator.SetTrigger("Hurt");
-            float dirX = Mathf.Sign(transform.position.x - attackerPosition.x);
-            Vector2 knockBackDir = new Vector2(dirX, lift).normalized;
-            if (force > 0f && rb != null) ApplyKnockBack(knockBackDir, force, duration);
-        }
-        else
-        {
-            Die();
-        }
+        if (IsDead()) { Die(); return; }
+        float dirX = Mathf.Sign(transform.position.x - attackerPosition.x);
+        Vector2 knockbackDir = new Vector2(dirX, lift).normalized;
+        HurtState.SetKnockbackData(knockbackDir, force, duration);
+        stateMachine.ChangeState(HurtState);
     }
-    private void ApplyKnockBack(Vector2 dir, float force, float duration)
-    {
-        isKnockedBack = true;
-        if (knockBackCoroutine != null)
-        {
-            StopCoroutine(knockBackCoroutine);
-        }
-        rb.velocity = Vector2.zero;
-        rb.AddForce(dir * force, ForceMode2D.Impulse);
-        knockBackCoroutine = StartCoroutine(ResetKnockBackRoutine(duration));
-    }
-    private IEnumerator ResetKnockBackRoutine(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        isKnockedBack = false;
-        if (!IsDead())
-        {
-            rb.velocity = new Vector2(0f, rb.velocity.y);
-        }
-    }
-
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {

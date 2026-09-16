@@ -27,9 +27,7 @@ public class EnemyAttackState : EnemyBaseState
         //detect and distance updating every frame
         enemy.DetectPlayer();
         distanceToPlayer = enemy.DistanceBtPlayer();
-        
         enemy.rb.velocity = new Vector2(0f, enemy.rb.velocity.y);
-
         //attack didnt finish -> wait
         if (!enemy.enemyAttack.isAttackFinished) return;
         //attack finished -> change state
@@ -43,7 +41,6 @@ public class EnemyAttackState : EnemyBaseState
         else if (distanceToPlayer > enemy.attackRange)
         {
             stateMachine.ChangeState(enemy.ChaseState);
-
         }
         //player in attack range -> attack
         else if (distanceToPlayer <= enemy.attackRange && cooldownTimer <= 0)

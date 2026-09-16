@@ -1,83 +1,81 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-
+[RequireComponent(typeof(Animator))]
 public class AttackController : MonoBehaviour
 {
-    private Animator animator;
-    public WeaponManager weaponManager {  get; private set; }
-    [SerializeField] private int comboStep = 0;
-    [SerializeField] private bool isWindowOpen = false;
-    [SerializeField] private bool hasQueuedNextAttack = false;
-    private readonly int comboStepHash = Animator.StringToHash("ComboStep");
-    private readonly int attackTriggerHash = Animator.StringToHash("Attack");
-    void Start()
+    private Animator _animator;
+    private WeaponManager _weaponManager;
+    private PlayerInputManager _inputManager;
+    private PlayerMovement _playerMovement;
+    [SerializeField] private int maxComboStep;
+    [SerializeField] private float comboTimeoutDuration;
+    private float comboTimeoutTimer;
+    private int currentComboStep;
+    private bool isAttacking;
+    private void Awake()
     {
-        animator = GetComponent<Animator>();
-        weaponManager = GetComponent<WeaponManager>();
+        _animator = GetComponent<Animator>();
+        _weaponManager = GetComponent<WeaponManager>();
+        _inputManager = GetComponent<PlayerInputManager>();
+        _playerMovement = GetComponent<PlayerMovement>();
     }
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (!isAttacking && comboTimeoutTimer > 0)
         {
-            HandleAttackInput();
-        }
-    }
-
-    public void EnableHitbox()
-    {
-        weaponManager.CurrentWeapon.EnableHitbox();
-    }
-    public void DisableHitbox()
-    {
-        weaponManager.CurrentWeapon.DisableHitbox();
-    }
-    private void HandleAttackInput()
-    {
-        if (weaponManager == null || weaponManager.CurrentWeapon == null) return;
-        if (comboStep == 0)
-        {
-            if (weaponManager.CurrentWeapon.CanAttack())
+            comboTimeoutTimer -= Time.deltaTime;
+            if (comboTimeoutTimer <= 0 && currentComboStep > 0)
             {
-                ExecuteAttack(1);
+                ResetCombo();
             }
-        }else if (isWindowOpen)
+        }
+        if (_inputManager.attackRequested && CanAttack())
         {
-            hasQueuedNextAttack = true;
-            isWindowOpen = false;
+            ExecuteAttack();
         }
     }
-    private void ExecuteAttack(int step)
+    private bool CanAttack()
     {
-        comboStep = step;
-        hasQueuedNextAttack = false;
-        isWindowOpen = false;
-        
-        animator.SetInteger(comboStepHash,comboStep);animator.SetTrigger(attackTriggerHash);
+        return !isAttacking && !_inputManager.isLocked;
     }
-    public void OpenComboWindow()
+    private void ExecuteAttack()
     {
-        isWindowOpen = true;
-    }
-    public void CheckNextCombo()
-    {
-        if (hasQueuedNextAttack && comboStep < 3)
+        if (!CanAttack()) return;
+        if (comboTimeoutTimer > 0)
         {
-            ExecuteAttack(comboStep+1);
+            currentComboStep = (currentComboStep % maxComboStep) + 1;
         }
-        else
+        else if (comboTimeoutTimer <= 0)
         {
-            ResetCombo();
+            currentComboStep = 1;
         }
+        comboTimeoutTimer = 0f;
+        isAttacking = true;
+        _inputManager.ConsumeAttackBuffer();
+        _animator.SetInteger("ComboStep", currentComboStep);
+        _animator.SetTrigger("Attack");
     }
-
     public void ResetCombo()
     {
-        comboStep = 0;
-        isWindowOpen = false;
-        hasQueuedNextAttack = false;
-        animator.SetInteger(comboStepHash,0);
+        currentComboStep = 0;
+        comboTimeoutTimer = 0f;
+        _animator.SetInteger("ComboStep", currentComboStep);
+    }
+    public void AE_OnAttackEnd()
+    {
+        isAttacking = false;
+        comboTimeoutTimer = comboTimeoutDuration;
+    }
+    public void AE_OnEnableHitbox()
+    {
+        _weaponManager.CurrentWeapon.EnableHitbox();
+    }
+    public void AE_OnDisableHitbox()
+    {
+        _weaponManager.CurrentWeapon.DisableHitbox();
+    }
+    public void Interrupt()
+    {
+        isAttacking = false;
+        ResetCombo(); 
     }
 }

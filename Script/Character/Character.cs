@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    // Start is called before the first frame update
     [SerializeField] private int maxHealth;
     [SerializeField] private int currentHealth;
     [SerializeField] private bool isTakingDamage = false;
@@ -14,7 +13,6 @@ public class Character : MonoBehaviour
     {
         currentHealth = maxHealth;
     }
-    
     virtual public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -40,9 +38,5 @@ public class Character : MonoBehaviour
     {
         return isDead;
     }
-    
-    public void KnockBack()
-    {
 
-    }
 }

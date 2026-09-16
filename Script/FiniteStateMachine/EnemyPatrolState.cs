@@ -13,7 +13,6 @@ public class EnemyPatrolState : EnemyBaseState
         enemy.currentStateDebug = Enemy.EnemyStateDebug.Patrol;
         waitTimer = 0f;
 
-
         if (enemy.waypoints == null || enemy.waypoints.Length == 0) return;
         Vector2 target = enemy.waypoints[enemy.currentWayPointIndex].position;
         float dirX = Mathf.Sign(target.x - enemy.rb.position.x);
@@ -25,7 +24,6 @@ public class EnemyPatrolState : EnemyBaseState
         //waiting
         if (enemy.isWaiting)
         {
-
             if (enemy.canSeePlayer)
             {
                 stateMachine.ChangeState(enemy.ChaseState);
@@ -39,7 +37,6 @@ public class EnemyPatrolState : EnemyBaseState
                 enemy.isWaiting = false;
                 waitTimer = 0f;
                 enemy.currentWayPointIndex = (enemy.currentWayPointIndex + 1) % enemy.waypoints.Length;
-
             }
         }
         //moving
@@ -66,7 +63,6 @@ public class EnemyPatrolState : EnemyBaseState
             else
             {
                 enemy.rb.velocity = new Vector2(dirX * enemy.speed, enemy.rb.velocity.y);
-
                 enemy.FlipSprite(dirX);
             }
         }

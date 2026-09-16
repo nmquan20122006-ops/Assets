@@ -1,100 +1,91 @@
 using System.Collections;
+using System.Runtime.CompilerServices;
 using UnityEngine;
-
 public class PlayerMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public float speed = 25f;
-    public float sprint = 1.8f;
-    public float jumpforce = 15f;
-    public float slideSpeed = 10f;
+    public float speed;
+    public float sprint;
+    public float slowdownSpeed;
+    public float jumpforce;
 
-    [SerializeField] private Vector2 playerVector;
+    private bool isFacingRight = true;
     private Rigidbody2D rb;
-    private float inputX;
-    private float currentSpeed;
+    private float inputX = 0f;
+    public float currentSpeed;
 
     private Animator animator;
-    private SpriteRenderer spriteRenderer;
     public LayerMask groundLayer;
     public Transform groundCheck;
+    private PlayerInputManager _inputManager;
 
     public bool isGrounded;
-    public bool isSliding;
-    public float radius = 0.2f;
-    public float slideDuration = 0.5f;
-    public float slideDirection;
-
+    public float radius;
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        _inputManager = GetComponent<PlayerInputManager>();
     }
-
     // Update is called once per frame
     void Update()
     {
-        inputX = Input.GetAxis("Horizontal");
-
-        bool isShiftPressed = Input.GetKey(KeyCode.LeftShift);
-        currentSpeed = isShiftPressed? speed*sprint
-            : speed;
-
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, radius ,groundLayer);
-
-        
-        animator.SetFloat("Speed", Mathf.Abs(inputX*currentSpeed));
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, jumpforce);
-            animator.SetTrigger("Jump");
-            
-        }
-
-        if (Input.GetKeyDown(KeyCode.LeftControl)&&isGrounded&&!isSliding)
-        {
-            StartCoroutine(performSlide());
-        }
-
-        animator.SetBool("IsGrounded", isGrounded);
-        animator.SetFloat("VelocityY", rb.velocity.y);
-        //animator.SetBool("IsSliding", isSliding);
-
-        float moveInputSprite = Input.GetAxisRaw("Horizontal");
-
-        if (inputX > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if(inputX < 0)
-        {
-            spriteRenderer.flipX = true;
-        }
+        HandleInputX();
+        HandleGrounded();
+        HandleCurrentSpeed();
+        HandleFlip(inputX);
+        HandleVerticalMovement();
     }
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(inputX * currentSpeed, rb.velocity.y);
-
-        if (isSliding)
-        {
-            rb.velocity = new Vector2(slideDirection * slideSpeed, rb.velocity.y);
-            return;
-        }
-        playerVector = transform.position;
+        HandleHorizontalMovement();
     }
-    private IEnumerator performSlide()
+    public void HandleGrounded()
     {
-        isSliding = true;
-
-        slideDirection = spriteRenderer.flipX ? -1 : 1;
-        if (animator != null)
-        {
-            //animator.SetTrigger("Slide");
-        }
-        yield return new WaitForSeconds(slideDuration);
-        isSliding = false;
-
+        isGrounded = Physics2D.OverlapCircle(groundCheck.position, radius, groundLayer);
+        animator.SetBool("IsGrounded", isGrounded);
+        animator.SetFloat("VelocityY", rb.velocity.y);
     }
+    private void HandleHorizontalMovement()
+    {
+        rb.velocity = new Vector2(inputX * currentSpeed, rb.velocity.y);
+        animator.SetFloat("Speed", Mathf.Abs(inputX * currentSpeed));
+    }
+    private void HandleVerticalMovement()
+    {
+        if (_inputManager.jumpRequested && isGrounded)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, jumpforce);
+            animator.SetTrigger("Jump");
+            _inputManager.ConsumeJumpBuffer();
+        }
+    }
+    private void HandleInputX()
+    {
+        if (_inputManager.leftInput && !_inputManager.rightInput) { inputX = -1f; }
+        else if (_inputManager.rightInput && !_inputManager.leftInput) { inputX = 1f; }
+        else inputX = 0f;
+    }
+    private void HandleCurrentSpeed()
+    {
+        currentSpeed = _inputManager.ShiftPressed ? speed * sprint : speed;
+    }
+    private void HandleFlip(float inputX)
+    {
+        if (inputX > 0&&!isFacingRight)
+        {
+            Flip();
+        }
+        else if (inputX < 0&&isFacingRight)
+        {
+            Flip();
+        }
+    }
+    private void Flip()
+    {
+        isFacingRight = !isFacingRight;
+        Vector3 localScale = transform.localScale;
+        localScale.x *= -1f;
+        transform.localScale = localScale;
+    }
+    
 }

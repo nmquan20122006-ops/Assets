@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <weaponName>k__BackingField: 
   <worldSprite>k__BackingField: {fileID: 21300000, guid: 0230513a91d07d949958e664ab2a6cb8, type: 3}
-  <damage>k__BackingField: 0
-  <attackSpeed>k__BackingField: 0
-  <knockBackForce>k__BackingField: 0
-  <knockBackDuration>k__BackingField: 0
-  <knockBackLift>k__BackingField: 0
+  <damage>k__BackingField: 20
+  <attackSpeed>k__BackingField: 1
+  <knockBackForce>k__BackingField: 10
+  <knockBackDuration>k__BackingField: 0.24
+  <knockBackLift>k__BackingField: 0.2
