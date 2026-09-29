@@ -11,6 +11,8 @@ public class PlayerInputManager : MonoBehaviour
     [field: SerializeField] public bool ShiftPressed { get; set; }
     [field: SerializeField] public bool LMousePressed {  get; set; }
     [field: SerializeField] public float attackBufferTime {  get; set; }
+    public bool jumpReleased => Keyboard.current.spaceKey.wasReleasedThisFrame;
+
     private float jumpBufferTimer;
     private float attackBufferTimer;
     public bool jumpRequested => jumpBufferTimer > 0f;
@@ -50,7 +52,7 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleAttackInput()
     {
         if (Mouse.current == null) return;
-        LMousePressed = Mouse.current.leftButton.isPressed;
+        LMousePressed = Mouse.current.leftButton.wasPressedThisFrame;
     }
     private void HandleJumpBuffer()
     {
@@ -58,12 +60,12 @@ public class PlayerInputManager : MonoBehaviour
         if (Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             jumpBufferTimer = jumpBufferTime;
-
         }
-        else if (jumpBufferTimer > 0)
+        if (jumpBufferTimer > 0)
         {
             jumpBufferTimer -= Time.deltaTime;
         }
+
     }
     private void HandleAttackBuffer()
     {
@@ -94,6 +96,7 @@ public class PlayerInputManager : MonoBehaviour
         leftInput = false;
         downInput = false;
         jumpBufferTimer = 0f;
+        attackBufferTimer = 0f;
         ShiftPressed = false;
     }
 }

@@ -38,5 +38,9 @@ public class Character : MonoBehaviour
     {
         return isDead;
     }
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+    }
 
 }

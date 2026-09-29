@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ICollectible 
 {
-    bool Collect(PlayerWeaponData data);
+    bool Collect(ItemSO data);
 }

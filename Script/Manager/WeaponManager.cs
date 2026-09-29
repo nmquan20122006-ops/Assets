@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponManager : MonoBehaviour, ICollectible
+public class WeaponManager : MonoBehaviour
 {
     [SerializeField] private Weapon[] weapons;
     private Weapon currentWeapont;
     public Weapon CurrentWeapon => currentWeapont;
-    void Start()
+    private void Awake()
     {
         EquipWeapon(0);
     }
-        
     // Update is called once per frame
     void Update()
     {

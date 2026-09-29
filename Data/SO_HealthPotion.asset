@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da4ad9ca4c5ed5347815f979f916ca3c, type: 3}
+  m_Name: SO_HealthPotion
+  m_EditorClassIdentifier: 
+  _itemid: item_potion_hp
+  _itemName: "B\xECnh m\xE1u nh\u1ECF"
+  _itemSprite: {fileID: 21300000, guid: e9cbbd7f4b159c44ba7918ed31612df2, type: 3}
+  _description: "H\u1ED3i l\u1EA1i 10 HP khi s\u1EED d\u1EE5ng"
+  _isStackable: 1
+  _maxStackSize: 3
+  _itemType: 0

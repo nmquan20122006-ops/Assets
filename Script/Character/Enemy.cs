@@ -17,6 +17,7 @@ public class Enemy : Character
     public Transform playerTranform { get; private set; }
     public Rigidbody2D rb { get; private set; }
     public Animator animator { get; private set; }
+
     private SpriteRenderer spriteRenderer;
     public enum EnemyStateDebug { Patrol, Chase, Attack, Hurt }
     [field: SerializeField] public EnemyStateDebug currentStateDebug { get; set; }

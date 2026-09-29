@@ -11,7 +11,6 @@ public class WeaponHitbox : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Hitbox: " + collision.gameObject.name);
         if (collision.CompareTag("Enemy"))
         {
             Enemy enemy = collision.GetComponent<Enemy>();
