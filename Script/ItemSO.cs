@@ -20,4 +20,9 @@ public class ItemSO : ScriptableObject
     public string description => _description;
     public bool isStackable => _isStackable;
     public int maxStackSize => _maxStackSize;
+
+    public virtual bool Use(GameObject user)
+    {
+        return false;
+    }
 }

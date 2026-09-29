@@ -105,7 +105,7 @@ public class Enemy : Character
     public void TakeDamage(int damage, Vector2 attackerPosition, float lift, float force, float duration)
     {
         base.TakeDamage(damage);
-        if (IsDead()) { Die(); return; }
+        if (isDead) { Die(); return; }
         float dirX = Mathf.Sign(transform.position.x - attackerPosition.x);
         Vector2 knockbackDir = new Vector2(dirX, lift).normalized;
         HurtState.SetKnockbackData(knockbackDir, force, duration);

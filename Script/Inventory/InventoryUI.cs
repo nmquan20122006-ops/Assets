@@ -6,6 +6,11 @@ public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private InventoryManager _inventoryManager;
     [SerializeField] private InventorySlot[] _slots;
+    [SerializeField] private GameObject _playerUser;
+    private void Awake()
+    {
+        if (_playerUser == null) _playerUser = Player.Instance.PlayerGameObject;
+    }
     private void Start()
     {
         UpdateUi();
@@ -28,12 +33,24 @@ public class InventoryUI : MonoBehaviour
     }
     private void OnEnable()
     {
-        Debug.Log("InventoryUI OnEnable");
         _inventoryManager.eInventoryChanged += UpdateUi;
+        foreach(var slot in _slots)
+        {
+            slot.eOnSlotClicked += HandleSlotClicked;
+        }
         UpdateUi();
     }
     private void OnDisable()
     {
         _inventoryManager.eInventoryChanged -= UpdateUi;
+        foreach(var slot in _slots)
+        {
+            slot.eOnSlotClicked -= HandleSlotClicked;
+        }
+    }
+    private void HandleSlotClicked(InventoryItem itemToUse)
+    {
+        if (itemToUse == null || _playerUser == null) return;
+        _inventoryManager.UseItem(itemToUse, _playerUser);
     }
 }

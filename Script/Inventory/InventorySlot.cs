@@ -9,6 +9,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     [SerializeField] private Image _itemImage;
     [SerializeField] private TMP_Text _amountText;
     private InventoryItem _currentItem;
+    public event System.Action<InventoryItem> eOnSlotClicked;
     public void SetItem(InventoryItem inventoryItem)
     {
         _currentItem = inventoryItem;
@@ -35,5 +36,10 @@ public class InventorySlot : MonoBehaviour, IDropHandler, IPointerClickHandler
     {
         if (_currentItem == null) { return; }
         Debug.Log("Click slot: " + _currentItem.data.name);
+        if(eventData.button == PointerEventData.InputButton.Right)
+        {
+            eOnSlotClicked?.Invoke(_currentItem);
+            
+        }
     }
 }

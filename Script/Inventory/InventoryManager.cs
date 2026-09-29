@@ -3,11 +3,6 @@ using UnityEngine;
 public class InventoryManager : MonoBehaviour, ICollectible
 {
     [SerializeField] private List<InventoryItem> _listItems = new List<InventoryItem>();
-    private Character _character;
-    private void Awake()
-    {
-        _character = GetComponent<Character>();
-    }
     public List<InventoryItem> listItems => _listItems;
     public System.Action eInventoryChanged;
     public bool Collect(ItemSO item)
@@ -26,12 +21,16 @@ public class InventoryManager : MonoBehaviour, ICollectible
         eInventoryChanged?.Invoke();
         return true;
     }
-    public void UseItem(InventoryItem inventoryItem)
+    public void UseItem(InventoryItem inventoryItem, GameObject user)
     {
-        if (inventoryItem == null)
+        if (inventoryItem == null || inventoryItem.data == null
+            || user == null || inventoryItem.stackSize <= 0) return;
+        bool isSuccess = inventoryItem.data.Use(user);
+        if (isSuccess)
         {
-            return;
+            inventoryItem.RemoveStack(1);
+            eInventoryChanged?.Invoke();
         }
-        
+
     }
 }

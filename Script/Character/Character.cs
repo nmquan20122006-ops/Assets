@@ -2,45 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IHealable
 {
-    [SerializeField] private int maxHealth;
-    [SerializeField] private int currentHealth;
-    [SerializeField] private bool isTakingDamage = false;
-    [SerializeField] private bool isDead = false;
+    [SerializeField] private int _maxHealth;
+    [SerializeField] private int _currentHealth;
+    [SerializeField] private bool _isTakingDamage = false;
+    [SerializeField] private bool _isDead = false;
+    public bool isTakingDamage => _isTakingDamage;
+    public bool isDead => _isDead;
+    public int currentHealth => _currentHealth;
+    public int maxHealth => _maxHealth;
 
     private void Awake()
     {
-        currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
     }
     virtual public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        isTakingDamage = true;
-        if (currentHealth <= 0)
+        _currentHealth -= damage;
+        _isTakingDamage = true;
+        if (_currentHealth <= 0)
         {
             Die();
         }
-        isTakingDamage = false;
+        _isTakingDamage = false;
     }
     protected void Die()
     {
-        isDead = true;
-        isTakingDamage = false;
+        _isDead = true;
+        _isTakingDamage = false;
     }
 
-    public bool IsTakingDamage()
-    {
-        return isTakingDamage;
-    }
-
-    public bool IsDead()
-    {
-        return isDead;
-    }
     public void Heal(int amount)
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        _currentHealth = Mathf.Min(_currentHealth + amount, _maxHealth);
     }
 
 }

@@ -21,7 +21,7 @@ public class EnemyHurtState : EnemyBaseState
     }
     public override void Execute()
     {
-        if (enemy.IsDead())
+        if (enemy.isDead)
         {
             //Change dead state
             return;

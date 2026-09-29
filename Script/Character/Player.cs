@@ -6,6 +6,12 @@ public class Player : Character
 {   
     private Animator animator;
     private AttackController attackController;
+    public static Player Instance { get; private set; }
+    public GameObject PlayerGameObject => gameObject;
+    private void Awake()
+    {
+        Instance = this;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +27,7 @@ public class Player : Character
     public override void TakeDamage(int damage)
     {
         base.TakeDamage(damage);
-        if (!IsDead())
+        if (!isDead)
         {
             animator.SetTrigger("TakeHit");
             if (attackController != null)

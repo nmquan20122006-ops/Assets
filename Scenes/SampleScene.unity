@@ -942,7 +942,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad29a94b9b281d4ca6ff8ac165563bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 4b48b10c9d6af2848b8683107383c709, type: 2}
+  item: {fileID: 11400000, guid: 058540ccac4b870448eb6c28fec44b73, type: 2}
 --- !u!4 &229181735
 Transform:
   m_ObjectHideFlags: 0
@@ -2425,7 +2425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad29a94b9b281d4ca6ff8ac165563bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 4b48b10c9d6af2848b8683107383c709, type: 2}
+  item: {fileID: 11400000, guid: 058540ccac4b870448eb6c28fec44b73, type: 2}
 --- !u!4 &697854801
 Transform:
   m_ObjectHideFlags: 0
@@ -4690,10 +4690,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041579641af989f408b01677c30e1e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 300
-  currentHealth: 301
-  isTakingDamage: 0
-  isDead: 0
+  _maxHealth: 100
+  _currentHealth: 0
+  _isTakingDamage: 0
+  _isDead: 0
   <speed>k__BackingField: 3
   <waypoints>k__BackingField:
   - {fileID: 976217243}
@@ -4970,10 +4970,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b2e3b143f16634db7c7cbc420540a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
-  currentHealth: 0
-  isTakingDamage: 0
-  isDead: 0
+  _maxHealth: 100
+  _currentHealth: 0
+  _isTakingDamage: 0
+  _isDead: 0
 --- !u!114 &1212550532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5281,7 +5281,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad29a94b9b281d4ca6ff8ac165563bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 4b48b10c9d6af2848b8683107383c709, type: 2}
+  item: {fileID: 11400000, guid: 058540ccac4b870448eb6c28fec44b73, type: 2}
 --- !u!4 &1291331683
 Transform:
   m_ObjectHideFlags: 0
@@ -5555,7 +5555,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ad29a94b9b281d4ca6ff8ac165563bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  item: {fileID: 11400000, guid: 4b48b10c9d6af2848b8683107383c709, type: 2}
+  item: {fileID: 11400000, guid: 058540ccac4b870448eb6c28fec44b73, type: 2}
 --- !u!4 &1327488916
 Transform:
   m_ObjectHideFlags: 0
@@ -5982,10 +5982,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 041579641af989f408b01677c30e1e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 300
-  currentHealth: 301
-  isTakingDamage: 0
-  isDead: 0
+  _maxHealth: 0
+  _currentHealth: 0
+  _isTakingDamage: 0
+  _isDead: 0
   <speed>k__BackingField: 3
   <waypoints>k__BackingField:
   - {fileID: 363820562}
@@ -9971,6 +9971,7 @@ MonoBehaviour:
   - {fileID: 1780691967}
   - {fileID: 1182022677}
   - {fileID: 863832717}
+  _playerUser: {fileID: 0}
 --- !u!224 &2102885797 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1510827892289124857, guid: 909675d485806bf4286f2ca04b48337e, type: 3}
