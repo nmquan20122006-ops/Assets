@@ -7,7 +7,7 @@ public class InventoryItem
     public ItemSO data => _data;
     public int stackSize => _stackSize;
     public bool isFullStack => _data != null && _stackSize >= _data.maxStackSize;
-    public InventoryItem(ItemSO itemData, int amount =1)
+    public InventoryItem(ItemSO itemData, int amount = 1)
     {
         _data = itemData; _stackSize = amount;
     }

@@ -2,18 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : Character
+public class PlayerStat : Character
 {   
     private Animator animator;
     private AttackController attackController;
-    public static Player Instance { get; private set; }
+    public static PlayerStat Instance { get; private set; }
     public GameObject PlayerGameObject => gameObject;
     private void Awake()
     {
         Instance = this;
     }
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
         animator = GetComponent<Animator>();
         attackController = GetComponent<AttackController>();

@@ -13,7 +13,7 @@ public class EnemyAttackHitbox : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Player player = other.GetComponent<Player>();
+            PlayerStat player = other.GetComponent<PlayerStat>();
             if (player != null)
             {
                 player.TakeDamage(enemyAttack.attackDamage);

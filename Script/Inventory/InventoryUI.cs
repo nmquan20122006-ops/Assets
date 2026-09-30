@@ -6,10 +6,11 @@ public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private InventoryManager _inventoryManager;
     [SerializeField] private InventorySlot[] _slots;
-    [SerializeField] private GameObject _playerUser;
+    private GameObject _playerUser;
+    public int slotAmount => _slots.Length;
     private void Awake()
     {
-        if (_playerUser == null) _playerUser = Player.Instance.PlayerGameObject;
+        if (_playerUser == null) _playerUser = PlayerStat.Instance.PlayerGameObject;
     }
     private void Start()
     {

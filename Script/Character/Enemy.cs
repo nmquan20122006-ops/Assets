@@ -42,7 +42,7 @@ public class Enemy : Character
         AttackState = new EnemyAttackState(this, stateMachine);
         HurtState = new EnemyHurtState(this, stateMachine);
     }
-    void Start()
+    protected override void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)

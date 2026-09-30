@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ICollectible 
 {
-    bool Collect(ItemSO data);
+    int Collect(ItemSO data, int amount);
 }

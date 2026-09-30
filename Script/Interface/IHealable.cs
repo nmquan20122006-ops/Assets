@@ -6,5 +6,5 @@ public interface IHealable
 {
     int currentHealth { get; }
     int maxHealth { get; }
-    void Heal(int amount);
+    bool Heal(int amount);
 }
