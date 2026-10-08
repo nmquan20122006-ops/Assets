@@ -17,7 +17,7 @@ public class Character : MonoBehaviour, IHealable
     {
         eOnHealthChanged?.Invoke(_currentHealth, _maxHealth);
     }
-    private void Awake()
+    protected virtual void Awake()
     {
         _currentHealth = _maxHealth;
     }

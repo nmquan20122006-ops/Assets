@@ -6,7 +6,6 @@ public class EnemyAttack : MonoBehaviour
     [field: SerializeField] public float attackCooldown {  get; set; }
     [field: SerializeField] public int attackDamage { get; set; }
     [SerializeField] private GameObject attackHitbox;
-    [SerializeField] private float attackRange = 0.5f;
     [field: SerializeField] public bool isAttackFinished { get; set; }
     private Animator animator;
     private Enemy enemy;

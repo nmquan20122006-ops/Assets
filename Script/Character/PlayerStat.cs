@@ -8,8 +8,9 @@ public class PlayerStat : Character
     private AttackController attackController;
     public static PlayerStat Instance { get; private set; }
     public GameObject PlayerGameObject => gameObject;
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         Instance = this;
     }
     // Start is called before the first frame update
